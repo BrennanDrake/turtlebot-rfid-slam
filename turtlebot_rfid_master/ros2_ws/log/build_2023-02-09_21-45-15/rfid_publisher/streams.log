@@ -1,0 +1,21 @@
+[0.663s] Invoking command in '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/src/rfid_publisher': PYTHONPATH=/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/prefix_override:/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/rfid_publisher build --build-base /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build install --record /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/install.log --install-scripts $base/lib/rfid_publisher --single-version-externally-managed
+[0.860s] running egg_info
+[0.860s] writing ../../build/rfid_publisher/rfid_publisher.egg-info/PKG-INFO
+[0.860s] writing dependency_links to ../../build/rfid_publisher/rfid_publisher.egg-info/dependency_links.txt
+[0.861s] writing entry points to ../../build/rfid_publisher/rfid_publisher.egg-info/entry_points.txt
+[0.861s] writing requirements to ../../build/rfid_publisher/rfid_publisher.egg-info/requires.txt
+[0.861s] writing top-level names to ../../build/rfid_publisher/rfid_publisher.egg-info/top_level.txt
+[0.891s] reading manifest file '../../build/rfid_publisher/rfid_publisher.egg-info/SOURCES.txt'
+[0.891s] writing manifest file '../../build/rfid_publisher/rfid_publisher.egg-info/SOURCES.txt'
+[0.892s] running build
+[0.892s] running build_py
+[0.892s] running install
+[0.892s] running install_lib
+[0.894s] running install_data
+[0.894s] running install_egg_info
+[0.896s] removing '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher-0.0.0-py3.8.egg-info' (and everything under it)
+[0.896s] Copying ../../build/rfid_publisher/rfid_publisher.egg-info to /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher-0.0.0-py3.8.egg-info
+[0.897s] running install_scripts
+[0.912s] Installing rfid_talker script to /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/rfid_publisher
+[0.912s] writing list of installed files to '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/install.log'
+[0.934s] Invoked command in '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/src/rfid_publisher' returned '0': PYTHONPATH=/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/prefix_override:/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/rfid_publisher build --build-base /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build install --record /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/install.log --install-scripts $base/lib/rfid_publisher --single-version-externally-managed

@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/rfid_publisher/rfid_publisher.egg-info
+writing ../../build/rfid_publisher/rfid_publisher.egg-info/PKG-INFO
+writing dependency_links to ../../build/rfid_publisher/rfid_publisher.egg-info/dependency_links.txt
+writing entry points to ../../build/rfid_publisher/rfid_publisher.egg-info/entry_points.txt
+writing requirements to ../../build/rfid_publisher/rfid_publisher.egg-info/requires.txt
+writing top-level names to ../../build/rfid_publisher/rfid_publisher.egg-info/top_level.txt
+writing manifest file '../../build/rfid_publisher/rfid_publisher.egg-info/SOURCES.txt'
+reading manifest file '../../build/rfid_publisher/rfid_publisher.egg-info/SOURCES.txt'
+writing manifest file '../../build/rfid_publisher/rfid_publisher.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build
+creating /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build/lib
+creating /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build/lib/rfid_publisher
+copying rfid_publisher/rfid_pub.py -> /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build/lib/rfid_publisher
+copying rfid_publisher/__init__.py -> /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build/lib/rfid_publisher
+running install
+running install_lib
+creating /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher
+copying /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build/lib/rfid_publisher/rfid_pub.py -> /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher
+copying /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/build/lib/rfid_publisher/__init__.py -> /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher
+byte-compiling /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher/rfid_pub.py to rfid_pub.cpython-38.pyc
+byte-compiling /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher/__init__.py to __init__.cpython-38.pyc
+running install_data
+creating /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/share/ament_index
+creating /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/share/ament_index/resource_index
+creating /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/share/ament_index/resource_index/packages
+copying resource/rfid_publisher -> /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/share/ament_index/resource_index/packages
+copying package.xml -> /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/share/rfid_publisher
+running install_egg_info
+Copying ../../build/rfid_publisher/rfid_publisher.egg-info to /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/python3.8/site-packages/rfid_publisher-0.0.0-py3.8.egg-info
+running install_scripts
+Installing rfid_talker script to /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/install/rfid_publisher/lib/rfid_publisher
+writing list of installed files to '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/rfid_publisher/install.log'

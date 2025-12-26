@@ -1,0 +1,36 @@
+[0.734s] Invoking command in '/home/carvinaxe3/ros2_workspace/ros2_ws/src/rfid_test': PYTHONPATH=/home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/prefix_override:/home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/rfid_test build --build-base /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build install --record /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/install.log --install-scripts $base/lib/rfid_test --single-version-externally-managed
+[0.959s] running egg_info
+[0.959s] creating ../../build/rfid_test/rfid_test.egg-info
+[0.959s] writing ../../build/rfid_test/rfid_test.egg-info/PKG-INFO
+[0.960s] writing dependency_links to ../../build/rfid_test/rfid_test.egg-info/dependency_links.txt
+[0.960s] writing entry points to ../../build/rfid_test/rfid_test.egg-info/entry_points.txt
+[0.960s] writing requirements to ../../build/rfid_test/rfid_test.egg-info/requires.txt
+[0.960s] writing top-level names to ../../build/rfid_test/rfid_test.egg-info/top_level.txt
+[0.963s] writing manifest file '../../build/rfid_test/rfid_test.egg-info/SOURCES.txt'
+[0.995s] reading manifest file '../../build/rfid_test/rfid_test.egg-info/SOURCES.txt'
+[0.995s] writing manifest file '../../build/rfid_test/rfid_test.egg-info/SOURCES.txt'
+[0.995s] running build
+[0.996s] running build_py
+[0.996s] creating /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build
+[0.996s] creating /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build/lib
+[0.996s] creating /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build/lib/rfid_test
+[0.996s] copying rfid_test/rfid_test.py -> /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build/lib/rfid_test
+[0.996s] copying rfid_test/__init__.py -> /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build/lib/rfid_test
+[0.996s] running install
+[0.997s] running install_lib
+[0.997s] creating /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages/rfid_test
+[0.998s] copying /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build/lib/rfid_test/rfid_test.py -> /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages/rfid_test
+[0.998s] copying /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build/lib/rfid_test/__init__.py -> /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages/rfid_test
+[0.998s] byte-compiling /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages/rfid_test/rfid_test.py to rfid_test.cpython-38.pyc
+[0.999s] byte-compiling /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages/rfid_test/__init__.py to __init__.cpython-38.pyc
+[0.999s] running install_data
+[1.000s] creating /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/share/ament_index
+[1.000s] creating /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/share/ament_index/resource_index
+[1.000s] creating /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/share/ament_index/resource_index/packages
+[1.000s] copying resource/rfid_test -> /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/share/ament_index/resource_index/packages
+[1.000s] copying package.xml -> /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/share/rfid_test
+[1.000s] running install_egg_info
+[1.002s] Copying ../../build/rfid_test/rfid_test.egg-info to /home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages/rfid_test-0.0.0-py3.8.egg-info
+[1.002s] running install_scripts
+[1.019s] writing list of installed files to '/home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/install.log'
+[1.044s] Invoked command in '/home/carvinaxe3/ros2_workspace/ros2_ws/src/rfid_test' returned '0': PYTHONPATH=/home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/prefix_override:/home/carvinaxe3/ros2_workspace/ros2_ws/install/rfid_test/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/rfid_test build --build-base /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/build install --record /home/carvinaxe3/ros2_workspace/ros2_ws/build/rfid_test/install.log --install-scripts $base/lib/rfid_test --single-version-externally-managed

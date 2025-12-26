@@ -1,0 +1,2 @@
+Invoking command in '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping -- -j8 -l8
+Invoked command in '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping' returned '2': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping -- -j8 -l8

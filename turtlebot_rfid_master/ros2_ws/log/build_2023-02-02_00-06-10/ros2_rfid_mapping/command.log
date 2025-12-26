@@ -1,0 +1,2 @@
+Invoking command in '/home/carvinaxe3/ros2_workspace/ros2_ws/build/ros2_rfid_mapping': /usr/bin/cmake /home/carvinaxe3/ros2_workspace/ros2_ws/src/ros2_rfid_mapping -DCMAKE_INSTALL_PREFIX=/home/carvinaxe3/ros2_workspace/ros2_ws/install/ros2_rfid_mapping
+Invoked command in '/home/carvinaxe3/ros2_workspace/ros2_ws/build/ros2_rfid_mapping' returned '1': /usr/bin/cmake /home/carvinaxe3/ros2_workspace/ros2_ws/src/ros2_rfid_mapping -DCMAKE_INSTALL_PREFIX=/home/carvinaxe3/ros2_workspace/ros2_ws/install/ros2_rfid_mapping

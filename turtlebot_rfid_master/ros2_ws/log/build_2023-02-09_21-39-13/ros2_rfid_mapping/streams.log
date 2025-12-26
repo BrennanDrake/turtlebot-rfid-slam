@@ -1,0 +1,6 @@
+[0.442s] Invoking command in '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping -- -j8 -l8
+[0.480s] CMake Error: The current CMakeCache.txt directory /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping/CMakeCache.txt is different than the directory /home/carvinaxe3/ros2_workspace/ros2_ws/build/ros2_rfid_mapping where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+[0.493s] CMake Error: The source directory "/home/carvinaxe3/ros2_workspace/ros2_ws/src/ros2_rfid_mapping" does not exist.
+[0.494s] Specify --help for usage, or press the help button on the CMake GUI.
+[0.497s] make: *** [Makefile:222: cmake_check_build_system] Error 1
+[0.499s] Invoked command in '/home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping' returned '2': CMAKE_PREFIX_PATH=/opt/ros/foxy /usr/bin/cmake --build /home/carvinaxe3/turtlebot_rfid_master/ros2_ws/build/ros2_rfid_mapping -- -j8 -l8

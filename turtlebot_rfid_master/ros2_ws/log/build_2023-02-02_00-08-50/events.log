@@ -1,0 +1,35 @@
+[0.000000] (-) TimerEvent: {}
+[0.000680] (rfid_test) JobQueued: {'identifier': 'rfid_test', 'dependencies': OrderedDict()}
+[0.000739] (ros2_rfid_mapping) JobQueued: {'identifier': 'ros2_rfid_mapping', 'dependencies': OrderedDict()}
+[0.000774] (rfid_test) JobStarted: {'identifier': 'rfid_test'}
+[0.013387] (ros2_rfid_mapping) JobStarted: {'identifier': 'ros2_rfid_mapping'}
+[0.099847] (-) TimerEvent: {}
+[0.200228] (-) TimerEvent: {}
+[0.212790] (ros2_rfid_mapping) JobProgress: {'identifier': 'ros2_rfid_mapping', 'progress': 'cmake'}
+[0.214291] (ros2_rfid_mapping) Command: {'cmd': ['/usr/bin/cmake', '/home/carvinaxe3/ros2_workspace/ros2_ws/src/ros2_rfid_mapping', '-DCMAKE_INSTALL_PREFIX=/home/carvinaxe3/ros2_workspace/ros2_ws/install/ros2_rfid_mapping'], 'cwd': '/home/carvinaxe3/ros2_workspace/ros2_ws/build/ros2_rfid_mapping', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'carvinaxe3'), ('SSH_AGENT_PID', '1207'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('HOME', '/home/carvinaxe3'), ('OLDPWD', '/home/carvinaxe3/ros2_workspace/ros2_ws/src/ros2_rfid_mapping'), ('DESKTOP_SESSION', 'ubuntu'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '991'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('IM_CONFIG_PHASE', '1'), ('LOGNAME', 'carvinaxe3'), ('JOURNAL_STREAM', '8:32474'), ('_', '/usr/bin/colcon'), ('XDG_SESSION_CLASS', 'user'), ('ROS1_INSTALL_PATH', '/opt/ros/noetic'), ('USERNAME', 'carvinaxe3'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS2_INSTALL_PATH', '/opt/ros/foxy'), ('WINDOWPATH', '2'), ('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('SESSION_MANAGER', 'local/carvinaxe3-Latitude-E6540:@/tmp/.ICE-unix/1244,unix/carvinaxe3-Latitude-E6540:/tmp/.ICE-unix/1244'), ('INVOCATION_ID', '15d30f95168b4990825c0a0b6bc5fec3'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/b45db230_74a3_46de_8b25_8ab891a10c12'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.367'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '30'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('ROS_MASTER_URI', 'http://192.168.137.119:11311'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/carvinaxe3/ros2_workspace/ros2_ws/build/ros2_rfid_mapping'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('ROS_HOSTNAME', '192.168.137.119'), ('COLCON', '1'), ('VTE_VERSION', '6003')]), 'shell': False}
+[0.239484] (ros2_rfid_mapping) StderrLine: {'line': b'CMake Error at CMakeLists.txt:19 (find_package):\n'}
+[0.239858] (ros2_rfid_mapping) StderrLine: {'line': b'  By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project\n'}
+[0.239961] (ros2_rfid_mapping) StderrLine: {'line': b'  has asked CMake to find a package configuration file provided by\n'}
+[0.240039] (ros2_rfid_mapping) StderrLine: {'line': b'  "ament_cmake", but CMake did not find one.\n'}
+[0.240108] (ros2_rfid_mapping) StderrLine: {'line': b'\n'}
+[0.240173] (ros2_rfid_mapping) StderrLine: {'line': b'  Could not find a package configuration file provided by "ament_cmake" with\n'}
+[0.240237] (ros2_rfid_mapping) StderrLine: {'line': b'  any of the following names:\n'}
+[0.240299] (ros2_rfid_mapping) StderrLine: {'line': b'\n'}
+[0.240361] (ros2_rfid_mapping) StderrLine: {'line': b'    ament_cmakeConfig.cmake\n'}
+[0.240429] (ros2_rfid_mapping) StderrLine: {'line': b'    ament_cmake-config.cmake\n'}
+[0.240490] (ros2_rfid_mapping) StderrLine: {'line': b'\n'}
+[0.240549] (ros2_rfid_mapping) StderrLine: {'line': b'  Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set\n'}
+[0.240609] (ros2_rfid_mapping) StderrLine: {'line': b'  "ament_cmake_DIR" to a directory containing one of the above files.  If\n'}
+[0.240669] (ros2_rfid_mapping) StderrLine: {'line': b'  "ament_cmake" provides a separate development package or SDK, be sure it\n'}
+[0.240727] (ros2_rfid_mapping) StderrLine: {'line': b'  has been installed.\n'}
+[0.240786] (ros2_rfid_mapping) StderrLine: {'line': b'\n'}
+[0.240843] (ros2_rfid_mapping) StderrLine: {'line': b'\n'}
+[0.240935] (ros2_rfid_mapping) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[0.241216] (ros2_rfid_mapping) StdoutLine: {'line': b'See also "/home/carvinaxe3/ros2_workspace/ros2_ws/build/ros2_rfid_mapping/CMakeFiles/CMakeOutput.log".\n'}
+[0.242025] (ros2_rfid_mapping) CommandEnded: {'returncode': 1}
+[0.265975] (ros2_rfid_mapping) JobEnded: {'identifier': 'ros2_rfid_mapping', 'rc': 1}
+[0.300348] (-) TimerEvent: {}
+[0.400647] (-) TimerEvent: {}
+[0.500922] (-) TimerEvent: {}
+[0.567016] (rfid_test) JobEnded: {'identifier': 'rfid_test', 'rc': 'SIGINT'}
+[0.578362] (-) EventReactorShutdown: {}
