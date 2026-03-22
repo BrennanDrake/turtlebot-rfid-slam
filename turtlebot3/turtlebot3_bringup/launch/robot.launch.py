@@ -92,6 +92,8 @@ def generate_launch_description():
             arguments=['-i', usb_port],
             output='screen'),
 
+        # Project-specific: publish RFID tag strings from USB serial (see ros2_ws/src/rfid_publisher).
+        # If /dev/ttyUSB* order changes between LiDAR and reader, set rfid_publisher serial_port param.
         Node(
             package="rfid_publisher",
             executable="rfid_talker",

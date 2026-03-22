@@ -1,3 +1,0 @@
-[console_scripts]
-listener = rfid_test.rfid_test:main
-

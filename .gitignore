@@ -1,0 +1,20 @@
+# Colcon / ROS 2 workspace build outputs (never commit)
+**/build/
+**/install/
+**/log/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+.eggs/
+
+# Editors / OS
+*.swp
+*~
+.DS_Store
+
+# Local dev tooling (ruff, etc.)
+.venv/

@@ -1,0 +1,12 @@
+[tool.ruff]
+line-length = 99
+target-version = "py38"
+src = ["ros2_ws/src"]
+
+[tool.ruff.lint]
+# Flake8-compatible rules. Omit isort (I*): ament_flake8 uses flake8-import-order (I100), which
+# differs from Ruff isort; colcon test is the source of truth for ROS packages.
+select = ["E", "F", "W"]
+ignore = [
+  "E203",  # whitespace before ':' (conflicts with black/ruff formatter in slices)
+]

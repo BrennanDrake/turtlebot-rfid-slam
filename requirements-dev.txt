@@ -1,0 +1,3 @@
+# Optional: create a local venv and install for fast lint before colcon.
+#   python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
+ruff>=0.8,<1
