@@ -1,0 +1,11 @@
+---
+description: Commit messages and PR hygiene (Conventional Commits–light)
+alwaysApply: true
+---
+
+# Git / commits
+
+- **Subject line**: imperative mood, ~72 chars or less, e.g. `fix(rfid): handle empty serial read`, `chore(docker): skip rosdep keys for vendored tb3`.
+- **Scope** (optional): area — `rfid`, `docker`, `slam`, `tb3`, `ci`, `docs`.
+- **Body**: explain *why* when behavior or distro pins change; link issues if any.
+- Do not commit secrets, large binary blobs, or colcon `build/` / `install/` / `log/` artifacts.

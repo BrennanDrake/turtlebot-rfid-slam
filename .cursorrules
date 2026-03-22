@@ -1,0 +1,31 @@
+# turtlebot-rfid-slam — Cursor AI project rules
+
+You are assisting on a **ROS 2 (Humble/Jazzy) + TurtleBot3 + RFID + slam_toolbox** monorepo.
+
+## Authoritative sources (read in order)
+
+1. **`AGENTS.md`** — repo map, rule index, distro notes.
+2. **`.cursor/rules/*.mdc`** — scoped rules (globs / alwaysApply). Prefer these over guessing conventions.
+
+## Hard constraints
+
+- **Canonical ROS packages**: `ros2_ws/src/` only. No duplicate packages at repo root.
+- **Vendored TurtleBot3**: `turtlebot3/` — minimal diffs; RFID integration is in `turtlebot3_bringup/launch/robot.launch.py`.
+- **Never commit** colcon outputs: `build/`, `install/`, `log/` (see `.gitignore`).
+- **Robot Docker** uses **Humble** (`robot/Dockerfile`). Do not change distro pins without explicit justification.
+
+## Python
+
+- **Ruff**: `pyproject.toml` — rules `E`, `F`, `W` only (no `I*`; `ament_flake8` / import-order is canonical for ROS packages).
+- ROS Python: respect **Apache-style copyright** headers where packages already use `ament_copyright` tests.
+- In `ament` test stubs: `from ament_*` **before** `import pytest`.
+
+## Quality gates
+
+- Before large Python changes: `./scripts/lint.sh` (compileall, xmllint, ruff).
+- Native build + tests: `./scripts/build_ros.sh` (requires sourced `/opt/ros/$ROS_DISTRO`).
+
+## Output style
+
+- Use Cursor **code citations** (`startLine:endLine:path`) when showing existing code.
+- Prefer focused diffs; avoid unrelated refactors.

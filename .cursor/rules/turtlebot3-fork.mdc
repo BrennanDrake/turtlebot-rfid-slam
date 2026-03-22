@@ -1,0 +1,11 @@
+---
+description: Vendored TurtleBot3 stack; minimize diffs to upstream
+globs: turtlebot3/**/*
+alwaysApply: false
+---
+
+# TurtleBot3 fork
+
+- Treat as **upstream-vendored**: only change what RFID / integration requires.
+- RFID integration point: `turtlebot3_bringup/launch/robot.launch.py` (`rfid_publisher` node).
+- LiDAR launch may assume `/dev/ttyUSB0`; document if RFID serial competes for the same device namespace on the robot.

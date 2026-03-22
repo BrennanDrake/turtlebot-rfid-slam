@@ -1,0 +1,12 @@
+---
+description: Bash scripts for lint and colcon workflows
+globs: scripts/**/*.sh
+alwaysApply: false
+---
+
+# Shell scripts (`scripts/`)
+
+- Use `#!/usr/bin/env bash` and `set -euo pipefail` where scripts already do.
+- Resolve repo root via `ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"` pattern for portability.
+- Scripts must **not** assume ROS is sourced except in `build_ros.sh` (which errors if `ROS_DISTRO` unset).
+- Keep `lint.sh` usable **without** Docker or ROS (compileall + optional xmllint + optional ruff).

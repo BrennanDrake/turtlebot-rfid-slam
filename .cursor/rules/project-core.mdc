@@ -1,0 +1,25 @@
+---
+description: Repo layout, scope, and safety for TurtleBot RFID + SLAM monorepo
+alwaysApply: true
+---
+
+# Project core
+
+## Identity
+
+- **Goal**: Integrate RFID/NFC tag streams with SLAM (`slam_toolbox`) and TurtleBot3; robot vs server split via Docker where applicable.
+- **Canonical ROS workspace**: `ros2_ws/src/`. Do not reintroduce duplicate packages at repo root.
+
+## Scope discipline
+
+- Change only what the task requires; avoid drive-by refactors in `turtlebot3/` or unrelated packages.
+- Do not commit `build/`, `install/`, `log/` (see `.gitignore`).
+
+## Citation
+
+- When referencing existing code in replies, use Cursor code citation format with path and line range.
+
+## Testing / quality
+
+- Python under `ros2_ws/src`: `ament_flake8` / `colcon test` expectations; Ruff config in `pyproject.toml` (no `I*` rules — conflicts with ament import order).
+- Prefer `./scripts/lint.sh` before large Python edits; use `./scripts/build_ros.sh` when validating native builds (requires sourced ROS).

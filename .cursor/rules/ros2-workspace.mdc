@@ -1,0 +1,27 @@
+---
+description: ROS 2 packages, TurtleBot3 fork, launch and Python conventions
+globs: ros2_ws/**/*
+alwaysApply: false
+---
+
+# ROS 2 workspace
+
+## Packages
+
+- **`rfid_publisher`**: Serial → `std_msgs/String` on `rfid`; parameters `serial_port`, `serial_baud`, `timer_period_sec`.
+- **`ros2_rfid_mapping`**: `slam_toolbox` launch + YAML only (no compiled nodes).
+- **`turtlebot_rfid`**: Custom URDF/sim; separate from stock `turtlebot3_description`.
+
+## TurtleBot3
+
+- Fork lives under `turtlebot3/` (see `turtlebot3-fork.mdc` when editing those paths).
+
+## Python
+
+- Match existing style; Apache-style copyright headers where `ament_copyright` applies.
+- For `ament` test files: `from ament_*` imports **before** `import pytest` (flake8-import-order / I100).
+
+## Launch / YAML
+
+- `slam_toolbox` scan parameter is `scan_topic` (not `scan_topc`).
+- Lifelong mapping / RFID graph injection: not implemented in-tree; treat as future work unless files exist.
