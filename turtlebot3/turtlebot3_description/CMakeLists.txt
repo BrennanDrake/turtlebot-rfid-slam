@@ -16,7 +16,9 @@ endif()
 # Find ament packages and libraries for ament and system dependencies
 ################################################################################
 find_package(ament_cmake REQUIRED)
-find_package(urdf REQUIRED)
+# urdf is an exec_depend (runtime) only; this package installs static meshes/URDF files
+# and does not link or compile against urdf. Removed find_package(urdf) to avoid pulling
+# the tinyxml2_vendor → FindTinyXML2 chain which fails on minimal arm64 images.
 
 ################################################################################
 # Install

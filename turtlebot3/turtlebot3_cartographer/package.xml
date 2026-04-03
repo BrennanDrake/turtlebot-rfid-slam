@@ -14,7 +14,7 @@
   <author email="thlim@robotis.com">Darby Lim</author>
   <author email="pyo@robotis.com">Pyo</author>
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <exec_depend>cartographer_ros</exec_depend>
+  <!-- cartographer_ros not listed: avoids rosdep apt install that fails on arm64; optional for cartographer launches. -->
   <export>
     <build_type>ament_cmake</build_type>
   </export>

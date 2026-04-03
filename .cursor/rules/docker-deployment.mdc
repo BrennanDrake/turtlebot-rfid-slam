@@ -12,6 +12,20 @@ alwaysApply: false
 - `rosdep install` uses `--skip-keys` for vendored `turtlebot3_*` packages; do not remove without fixing duplicate apt installs.
 - Runtime: prefer `--network host` for DDS; pass `--device` for USB (LiDAR, RFID serial).
 
+### Raspberry Pi (arm64 only)
+
+- Robot image targets **linux/arm64** only; `scripts/docker_build_robot.sh` defaults to that.
+- A plain `docker build` on **x86_64** yields **amd64** — the Pi cannot pull it. Use `docker buildx --platform linux/arm64` (slow on PC) or build **on the Pi** and push.
+
+### Cross-build (`exec format error` in `RUN`)
+
+- Building **linux/arm64** on **x86_64** needs **QEMU** (`binfmt_misc`). Without it, `/bin/bash` inside the arm64 image cannot execute → **exec format error**. Run: `docker run --privileged --rm tonistiigi/binfmt --install all` once on the build host, or build **on the Raspberry Pi** (no emulation).
+
+### HTTP registry (“HTTPS client” push error)
+
+- Plain HTTP registries need **`insecure-registries`** in the **daemon** config (`/etc/docker/daemon.json` or rootless `~/.config/docker/daemon.json`), then **restart Docker**.
+- If push still says **HTTP response to HTTPS client**, Buildx’s **`docker-container` driver** may ignore that — **`docker_build_robot.sh`** defaults to **`BUILDX_DRIVER=docker`** and selects the **`default`** builder (only one `docker` driver instance exists).
+
 ## Server image (`server/Dockerfile`)
 
 - SLAM + `ros2_rfid_mapping` overlay; not the full robot driver stack.

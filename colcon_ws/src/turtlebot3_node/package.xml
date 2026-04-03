@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>turtlebot3_description</name>
+  <name>turtlebot3_node</name>
   <version>2.1.4</version>
   <description>
-    3D models of the TurtleBot3 for simulation and visualization
-  </description>
+    TurtleBot3 driver node that include diff drive controller, odometry and tf node
+  </description> 
   <maintainer email="willson@robotis.com">Will Son</maintainer>
   <license>Apache 2.0</license>
   <url type="website">http://turtlebot3.robotis.com</url>
@@ -14,7 +14,18 @@
   <author email="thlim@robotis.com">Darby Lim</author>
   <author email="pyo@robotis.com">Pyo</author>
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <exec_depend>urdf</exec_depend>
+  <depend>dynamixel_sdk</depend>
+  <depend>geometry_msgs</depend>
+  <depend>message_filters</depend>
+  <depend>nav_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>rcutils</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>turtlebot3_msgs</depend>
   <export>
     <build_type>ament_cmake</build_type>
   </export>

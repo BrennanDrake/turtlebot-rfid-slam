@@ -26,6 +26,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch.substitutions import ThisLaunchFileDir
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
@@ -56,18 +57,30 @@ def generate_launch_description():
             'lidar_pkg_dir',
             default=os.path.join(get_package_share_directory('hls_lfcd_lds_driver'), 'launch'))
 
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    lidar_port = LaunchConfiguration('lidar_port')
+    rfid_serial_port = LaunchConfiguration('rfid_serial_port')
+    use_sim_time = LaunchConfiguration('use_sim_time')
 
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
-            default_value=use_sim_time,
+            default_value='false',
             description='Use simulation (Gazebo) clock if true'),
 
         DeclareLaunchArgument(
             'usb_port',
             default_value=usb_port,
             description='Connected USB port with OpenCR'),
+
+        DeclareLaunchArgument(
+            'lidar_port',
+            default_value='/dev/ttyUSB0',
+            description='Serial device for LDS (inside container, e.g. /dev/ttyUSB1 if LiDAR is second USB)'),
+
+        DeclareLaunchArgument(
+            'rfid_serial_port',
+            default_value='/dev/ttyUSB0',
+            description='Serial device for rfid_publisher (Docker: e.g. /dev/ttyrfid if mapped from host)'),
 
         DeclareLaunchArgument(
             'tb3_param_dir',
@@ -82,7 +95,10 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([lidar_pkg_dir, LDS_LAUNCH_FILE]),
-            launch_arguments={'port': '/dev/ttyUSB0', 'frame_id': 'base_scan'}.items(),
+            launch_arguments={
+                'port': lidar_port,
+                'frame_id': 'base_scan',
+            }.items(),
         ),
 
         Node(
@@ -93,10 +109,12 @@ def generate_launch_description():
             output='screen'),
 
         # Project-specific: publish RFID tag strings from USB serial (see ros2_ws/src/rfid_publisher).
-        # If /dev/ttyUSB* order changes between LiDAR and reader, set rfid_publisher serial_port param.
         Node(
             package="rfid_publisher",
             executable="rfid_talker",
+            parameters=[{
+                'serial_port': ParameterValue(rfid_serial_port, value_type=str),
+            }],
             output="screen"),
 
     ])
