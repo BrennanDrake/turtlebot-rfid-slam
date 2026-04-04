@@ -7,6 +7,14 @@
 # Usage (from repo root):
 #   nas_reg=192.168.1.203:5000 TAG=1.0 ./scripts/pc/docker_build_robot.sh
 #
+# Force a full rebuild (ignore BuildKit layer cache), e.g. after URDF edits that still show CACHED:
+#   NO_CACHE=1 nas_reg=... ./scripts/pc/docker_build_robot.sh
+#
+# Speed: cross-building **linux/arm64** on x86 uses QEMU and is **slow** (especially `colcon` with
+# NO_CACHE). Prefer **native** `docker build -f robot/Dockerfile` **on the Pi** when iterating, or
+# keep **NO_CACHE** off so BuildKit reuses layers. Use `./scripts/pc/quick_robot_colcon.sh <pkg>`
+# to validate a single package against a **robotdeps** image without rebuilding the full final stage.
+#
 # Optional fast path (uses scripts/pc/quick_robot_colcon.sh + robot/Dockerfile target robotdeps):
 #   QUICK_PACKAGES="turtlebot3_node" nas_reg=... ./scripts/pc/docker_build_robot.sh
 #   Runs a package-scoped colcon first (fail fast). SKIP_QUICK=1 to disable.
@@ -78,6 +86,12 @@ LATEST_TAG="${LATEST_TAG:-latest}"
 FULL_LATEST="${nas_reg}/${IMAGE}:${LATEST_TAG}"
 ROBOTDEPS_TAG="${ROBOTDEPS_TAG:-robotdeps-${TAG}}"
 
+BUILDX_NO_CACHE=()
+if [[ "${NO_CACHE:-0}" == "1" ]]; then
+  BUILDX_NO_CACHE=(--no-cache)
+  echo "[docker_build_robot] NO_CACHE=1: building without layer cache" >&2
+fi
+
 # First platform string only (quick_robot_colcon uses a single --platform).
 _primary_platform="${PLATFORMS%%,*}"
 
@@ -93,6 +107,7 @@ fi
 if [[ "${PUSH_ROBOTDEPS:-0}" == "1" ]]; then
   echo "[docker_build_robot] pushing robotdeps stage as ${nas_reg}/${IMAGE}:${ROBOTDEPS_TAG}" >&2
   docker buildx build \
+    "${BUILDX_NO_CACHE[@]}" \
     --platform "${PLATFORMS}" \
     -f robot/Dockerfile \
     --target robotdeps \
@@ -104,6 +119,7 @@ fi
 echo "[docker_build_robot] building ${FULL_TAG} (+ ${FULL_LATEST}) for --platform ${PLATFORMS}"
 
 docker buildx build \
+  "${BUILDX_NO_CACHE[@]}" \
   --platform "${PLATFORMS}" \
   -f robot/Dockerfile \
   -t "${FULL_TAG}" \

@@ -12,7 +12,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, TimerAction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -32,6 +32,11 @@ def generate_launch_description():
             'config',
             'mapper_params_online_async.yaml'),
         description='Full path to the ROS 2 YAML for slam_toolbox parameters')
+    declare_slam_activate_delay = DeclareLaunchArgument(
+        'slam_activate_delay',
+        default_value='3.0',
+        description='Seconds to wait before lifecycle configure+activate on slam_toolbox',
+    )
 
     # slam_toolbox async node: processes laser scans and publishes map -> odom TF and /map.
     start_async_slam_toolbox_node = Node(
@@ -44,10 +49,29 @@ def generate_launch_description():
         name='slam_toolbox',
         output='screen')
 
+    slam_lifecycle_activate = TimerAction(
+        period=LaunchConfiguration('slam_activate_delay'),
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    'bash',
+                    '-c',
+                    (
+                        'ros2 lifecycle set /slam_toolbox configure --no-daemon && '
+                        'sleep 0.5 && ros2 lifecycle set /slam_toolbox activate --no-daemon'
+                    ),
+                ],
+                output='screen',
+            ),
+        ],
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(declare_use_sim_time_argument)
     ld.add_action(declare_slam_params_file_cmd)
+    ld.add_action(declare_slam_activate_delay)
     ld.add_action(start_async_slam_toolbox_node)
+    ld.add_action(slam_lifecycle_activate)
 
     return ld

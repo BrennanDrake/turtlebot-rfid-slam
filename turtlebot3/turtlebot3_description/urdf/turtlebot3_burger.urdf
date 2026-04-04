@@ -49,10 +49,11 @@
   <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
-    <origin xyz="0.0 0.0 0.010" rpy="0 0 0"/>
+    <origin xyz="0.0 0.0 0.010" rpy="0 0 3.141592653589793"/>
   </joint>
 
   <link name="base_link">
+    <!-- Stock mesh/collision. LDS-02: z=pi on base_joint (not scan_joint) so shell+wheels+sensor tree match RViz/reality. -->
     <visual>
       <origin xyz="-0.032 0 0.0" rpy="0 0 0"/>
       <geometry>
@@ -83,7 +84,7 @@
 
   <link name="rfid_base_link">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 3.14159"/>
+      <origin xyz="0 0 0" rpy="0 0 3.141592653589793"/>
       <geometry>
         <mesh filename="package://turtlebot3_description/meshes/bases/rfid_base.stl" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -120,7 +121,8 @@
     <parent link="base_link"/>
     <child link="wheel_left_link"/>
     <origin xyz="0.0 0.08 0.023" rpy="-1.57 0 0"/>
-    <axis xyz="0 0 1"/>
+    <!-- Negative Z matches OpenCR joint_state sign so RViz wheel spin matches the physical wheels. -->
+    <axis xyz="0 0 -1"/>
   </joint>
 
   <link name="wheel_left_link">
@@ -150,7 +152,7 @@
     <parent link="base_link"/>
     <child link="wheel_right_link"/>
     <origin xyz="0.0 -0.080 0.023" rpy="-1.57 0 0"/>
-    <axis xyz="0 0 1"/>
+    <axis xyz="0 0 -1"/>
   </joint>
 
   <link name="wheel_right_link">

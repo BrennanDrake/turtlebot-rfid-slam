@@ -60,5 +60,7 @@ if ! command -v ros2 >/dev/null 2>&1 || ! ros2 pkg prefix turtlebot3_description
 fi
 
 echo "[run_rviz_robot] ROS_DOMAIN_ID=${ROS_DOMAIN_ID} turtlebot3_description=$(ros2 pkg prefix turtlebot3_description)" >&2
+echo "[run_rviz_robot] Note: rviz_configs default uses RobotModel → Description Topic /robot_description from the **robot**." >&2
+echo "[run_rviz_robot]   Wheel spin / URDF changes apply after **rebuilding & running the robot Docker image**, not only PC colcon." >&2
 echo "[run_rviz_robot] rviz2 -d ${CONFIG_PATH}" >&2
 exec rviz2 -d "${CONFIG_PATH}"

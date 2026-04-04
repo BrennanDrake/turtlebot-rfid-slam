@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Build the ROS 2 workspace and run package tests (ament linters + pytest).
 #
-# Ensures **ros2_ws/src/turtlebot3_description** is a symlink to **turtlebot3/turtlebot3_description**
-# (vendored fork) so local RViz can resolve `package://turtlebot3_description/...` after
-# `source ros2_ws/install/setup.bash`. You do not need to create the link by hand.
+# Ensures symlinks under **ros2_ws/src/** to vendored TurtleBot3 packages:
+# - **turtlebot3_description** (RViz `package://` URIs)
+# - **turtlebot3_teleop** (keyboard teleop: `ros2 run turtlebot3_teleop teleop_keyboard`)
 #
 # Usage (from repo root):
 #   ./scripts/pc/build_ros.sh              # lint -> colcon build -> colcon test
@@ -43,6 +43,15 @@ fi
 mkdir -p "${ROOT}/ros2_ws/src"
 ln -sfn "../../turtlebot3/turtlebot3_description" "${TB3_LINK}"
 echo "[build] symlink ${TB3_LINK} -> turtlebot3/turtlebot3_description"
+
+TB3_TELEOP="${ROOT}/turtlebot3/turtlebot3_teleop"
+TB3_TELEOP_LINK="${ROOT}/ros2_ws/src/turtlebot3_teleop"
+if [[ ! -d "${TB3_TELEOP}" ]]; then
+  echo "[build] missing vendored turtlebot3_teleop: ${TB3_TELEOP}" >&2
+  exit 1
+fi
+ln -sfn "../../turtlebot3/turtlebot3_teleop" "${TB3_TELEOP_LINK}"
+echo "[build] symlink ${TB3_TELEOP_LINK} -> turtlebot3/turtlebot3_teleop"
 
 cd "${ROOT}/ros2_ws"
 echo "[build] colcon build ${PASSTHRU[*]}"

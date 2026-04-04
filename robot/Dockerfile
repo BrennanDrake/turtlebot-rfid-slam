@@ -49,7 +49,7 @@ RUN apt-get update \
     && rosdep update \
     && rosdep install --from-paths src --ignore-src -y -r --rosdistro humble \
         --skip-keys "turtlebot3 turtlebot3_bringup turtlebot3_cartographer turtlebot3_description turtlebot3_example turtlebot3_navigation2 turtlebot3_node turtlebot3_teleop cartographer_ros" \
-    && apt-get install -y --no-install-recommends libtinyxml2-dev libssl-dev \
+    && apt-get install -y --no-install-recommends libtinyxml2-dev libssl-dev libssl3 \
     && rm -rf /var/lib/apt/lists/*
 # libtinyxml2-dev / libssl-dev: slim ros-base; needed for some vendored builds / CMake.
 
@@ -68,11 +68,22 @@ ENV ROS_DOMAIN_ID=1
 # Match run_robot_docker / entrypoint; LDS-01 = HLDS, LDS-02 = ld08_driver.
 ENV LDS_MODEL=LDS-02
 
-# Do not pass global --cmake-args -DOPENSSL_* here: it breaks underlay packages (e.g. rcutils
-# during rosidl) even though nothing in src/ builds Fast-DDS from source. If a future package
-# needs OpenSSL on arm64, scope flags to that package (colcon.meta) or set OPENSSL_ROOT_DIR.
+# Do not pass global `colcon --cmake-args -DOPENSSL_*=...`: that can break underlay packages.
+# For linux/arm64 built under QEMU on x86, FindOpenSSL often sees the version but not
+# libcrypto.so (multiarch path). Env OPENSSL_ROOT_DIR + PKG_CONFIG_PATH fixes Fast-DDS without
+# per-package cmake flags.
 # Do not use `set -u`: humble setup.bash touches optional env vars (e.g. AMENT_TRACE_SETUP_FILES).
 RUN set -eo pipefail \
+    && case "$(uname -m)" in \
+         aarch64) \
+           export OPENSSL_ROOT_DIR=/usr \
+           && export PKG_CONFIG_PATH="/usr/lib/aarch64-linux-gnu/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}" \
+           ;; \
+         x86_64) \
+           export OPENSSL_ROOT_DIR=/usr \
+           && export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}" \
+           ;; \
+       esac \
     && source /opt/ros/humble/setup.bash \
     && n=1 \
     && max=5 \

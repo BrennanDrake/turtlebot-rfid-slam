@@ -80,4 +80,20 @@ docker run --rm -d --name turtlebot-rfid --net=host \
 
 Same behavior from the repo on the Pi: `nas_reg=192.168.1.203:5000 ./scripts/robot/run_robot_docker.sh` (override `TAG`, `DEVICE_*`, `LDS_MODEL` (`LDS-01` vs `LDS-02`), or `RFID_SERIAL_PORT` / `LIDAR_PORT` as needed).
 
+### LiDAR TF: `base_scan` vs `base_link` (+x)
+
+The **red axis** in RViz is **`base_link` +x** (REP-103 forward). **`sensor_msgs/LaserScan`** uses **`frame_id`** **`base_scan`**.
+
+**LDS-02 / LD08** in this fork: put the **z-rotation π** on **`base_joint`** (`base_footprint` → **`base_link`**) and keep **`scan_joint`** (`base_link` → **`base_scan`**) at **`rpy="0 0 0"`**. That rotates the **whole** robot model (shell + wheels + laser mount) together so RViz matches the physical robot, while the laser driver still sees **`base_scan`** aligned with **`base_link`**. (Upstream often uses **`base_joint` 0** and **`scan_joint` π** instead—the **net** `base_footprint`→`base_scan` orientation can be equivalent, but only one style should be active.)
+
+Files: `turtlebot3/turtlebot3_description/urdf/turtlebot3_{burger,waffle,waffle_pi}.urdf`.
+
+**What to do after changing URDF**
+
+1. **Robot Docker:** rebuild and push the image (`./scripts/pc/docker_build_robot.sh` with your registry/tag), then on the Pi **`docker pull`** the image and **restart** the container (`./scripts/robot/run_robot_docker.sh` or your unit/cron).
+2. **Native bringup (no Docker):** restart **`robot_state_publisher`** / full bringup so **`/robot_description`** and TF update.
+3. **Check in RViz** (Fixed Frame **`odom`**): **`base_link` +x** should align with the **forward** half of the scan; driving **toward a wall**, **range** along the forward direction should **decrease**.
+
+**LDS-01 (HLDS):** use **`rpy="0 0 0"`** on **`base_joint`** and **`scan_joint`** (upstream style).
+
 Docker does not auto-resolve “newest semver” from the registry; you either use a **moving tag** like `latest` (above) or pin `1.0`, `1.1`, etc.

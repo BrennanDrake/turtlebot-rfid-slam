@@ -8,7 +8,8 @@ alwaysApply: false
 
 ## Robot image (`robot/Dockerfile`)
 
-- Base: `ros:humble-ros-base`. Build context: **repo root** (`turtlebot3/` + `ros2_ws/src/`).
+- Base: `ros:humble-ros-base`. Build context: **repo root** (`turtlebot3/` + `ros2_ws/src/`). Root **`.dockerignore`** excludes colcon `build`/`install`/`log` under `ros2_ws/`.
+- Run **colcon** from **`ros2_ws/`**, not **`ros2_ws/src/`**. If `install/`/`build`/`log/` appear under `src/`, delete them; **`robot/merge_src.sh`** skips those names so Docker `rosdep` does not choke on nested install trees.
 - `rosdep install` uses `--skip-keys` for vendored `turtlebot3_*` packages; do not remove without fixing duplicate apt installs.
 - Runtime: prefer `--network host` for DDS; pass `--device` for USB (LiDAR, RFID serial).
 

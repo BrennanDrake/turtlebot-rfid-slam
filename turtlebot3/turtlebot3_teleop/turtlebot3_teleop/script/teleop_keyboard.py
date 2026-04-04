@@ -59,6 +59,16 @@ ANG_VEL_STEP_SIZE = 0.1
 
 TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
 
+
+def _env_truthy(name):
+    return os.environ.get(name, '0').lower() in ('1', 'true', 'yes')
+
+
+# Gazebo / gz diff-drive often uses the opposite linear sign vs the real OpenCR stack for the
+# same physical "forward". Set TELEOP_INVERT_LINEAR=1 when teleoping simulation only.
+_INVERT_LINEAR = _env_truthy('TELEOP_INVERT_LINEAR')
+_INVERT_ANGULAR = _env_truthy('TELEOP_INVERT_ANGULAR')
+
 msg = """
 Control Your TurtleBot3!
 ---------------------------
@@ -210,6 +220,11 @@ def main():
             twist.angular.x = 0.0
             twist.angular.y = 0.0
             twist.angular.z = control_angular_velocity
+
+            if _INVERT_LINEAR:
+                twist.linear.x = -twist.linear.x
+            if _INVERT_ANGULAR:
+                twist.angular.z = -twist.angular.z
 
             pub.publish(twist)
 

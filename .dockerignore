@@ -1,0 +1,8 @@
+# Robot Dockerfile context: keep COPY ros2_ws/src small and free of colcon trash.
+# Colcon output belongs under ros2_ws/{build,install,log}, never under ros2_ws/src/.
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+ros2_ws/src/build/
+ros2_ws/src/install/
+ros2_ws/src/log/

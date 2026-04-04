@@ -8,7 +8,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, TimerAction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -53,6 +53,11 @@ def generate_launch_description():
         default_value='',
         description='Path to RFID landmarks YAML',
     )
+    declare_slam_activate_delay = DeclareLaunchArgument(
+        'slam_activate_delay',
+        default_value='3.0',
+        description='Seconds to wait before lifecycle configure+activate on slam_toolbox',
+    )
 
     map_server_node = Node(
         package='nav2_map_server',
@@ -95,6 +100,23 @@ def generate_launch_description():
         parameters=[ekf_params_file, {'use_sim_time': use_sim_time}],
     )
 
+    slam_lifecycle_activate = TimerAction(
+        period=LaunchConfiguration('slam_activate_delay'),
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    'bash',
+                    '-c',
+                    (
+                        'ros2 lifecycle set /slam_toolbox configure --no-daemon && '
+                        'sleep 0.5 && ros2 lifecycle set /slam_toolbox activate --no-daemon'
+                    ),
+                ],
+                output='screen',
+            ),
+        ],
+    )
+
     return LaunchDescription(
         [
             declare_use_sim_time,
@@ -102,9 +124,11 @@ def generate_launch_description():
             declare_slam_params,
             declare_ekf,
             declare_landmark_file,
+            declare_slam_activate_delay,
             map_server_node,
             slam_node,
             landmark_node,
             ekf_node,
+            slam_lifecycle_activate,
         ],
     )

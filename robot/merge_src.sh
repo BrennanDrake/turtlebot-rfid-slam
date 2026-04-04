@@ -16,6 +16,11 @@ done
 if compgen -G "${ROS2_SRC}"/\* >/dev/null 2>&1; then
   for item in "${ROS2_SRC}"/*; do
     base="$(basename "${item}")"
+    # Colcon must run from ros2_ws/, not ros2_ws/src/. If build/install/log were created
+    # under src/ by mistake, copying them breaks rosdep (nested install/share paths).
+    case "${base}" in
+      install|build|log) continue ;;
+    esac
     if [[ -e "${DEST}/${base}" ]]; then
       continue
     fi

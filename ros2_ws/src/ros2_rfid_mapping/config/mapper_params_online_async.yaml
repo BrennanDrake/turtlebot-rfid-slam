@@ -1,5 +1,10 @@
 # Parameters for slam_toolbox async online mapping (see ros2_rfid_mapping/launch/online_async_launch.py).
 # Tune scan topic and frames to match your robot; RFID is handled outside slam_toolbox.
+#
+# If the node logs "LaserRangeScan contains N readings, expected M", those scans are dropped
+# (karto expects N from angle_min/max/increment). LD08 and some drivers vary by 1–5 beams—
+# tune the LiDAR driver or slightly adjust published angle_max (≈ one increment). See:
+# https://github.com/SteveMacenski/slam_toolbox/issues/426
 slam_toolbox:
   ros__parameters:
 
@@ -29,10 +34,12 @@ slam_toolbox:
     debug_logging: false
     throttle_scans: 1
     transform_publish_period: 0.02 #if 0 never publishes odometry
-    map_update_interval: 5.0
+    # Map publish rate (seconds). Lower = more frequent /map updates (more CPU).
+    map_update_interval: 2.0
     resolution: 0.05
     max_laser_range: 20.0 #for rastering images
-    minimum_time_interval: 0.5
+    # Min time between scan-matching updates (seconds). Lower = reacts faster; too low = noisy.
+    minimum_time_interval: 0.2
     transform_timeout: 0.2
     tf_buffer_duration: 30.
     stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
@@ -41,8 +48,10 @@ slam_toolbox:
     # General Parameters
     use_scan_matching: true
     use_scan_barycenter: true
-    minimum_travel_distance: 0.5
-    minimum_travel_heading: 0.5
+    # Min motion before a new scan match (meters / rad). Lower = updates with small moves;
+    # too low can add jitter and CPU load. Typical: 0.1–0.3 m, 0.1–0.3 rad.
+    minimum_travel_distance: 0.15
+    minimum_travel_heading: 0.15
     scan_buffer_size: 10
     scan_buffer_maximum_scan_distance: 10.0
     link_match_minimum_response_fine: 0.1  
