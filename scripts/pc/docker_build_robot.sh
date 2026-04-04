@@ -5,19 +5,22 @@
 # could not pull — this script defaults to arm64.
 #
 # Usage (from repo root):
-#   nas_reg=192.168.1.203:5000 TAG=1.0 ./scripts/docker_build_robot.sh
+#   nas_reg=192.168.1.203:5000 TAG=1.0 ./scripts/pc/docker_build_robot.sh
 #
-# Optional fast path (uses scripts/quick_robot_colcon.sh + robot/Dockerfile target robotdeps):
-#   QUICK_PACKAGES="turtlebot3_node" nas_reg=... ./scripts/docker_build_robot.sh
+# Optional fast path (uses scripts/pc/quick_robot_colcon.sh + robot/Dockerfile target robotdeps):
+#   QUICK_PACKAGES="turtlebot3_node" nas_reg=... ./scripts/pc/docker_build_robot.sh
 #   Runs a package-scoped colcon first (fail fast). SKIP_QUICK=1 to disable.
 #   SKIP_QUICK_DEPS_BUILD=1 reuse existing DEPS_IMAGE (default turtlebot-rfid-robot:deps).
 #
 # Optional: also push the long rosdep layer as a separate tag (cache / CI):
-#   PUSH_ROBOTDEPS=1 nas_reg=... ./scripts/docker_build_robot.sh
+#   PUSH_ROBOTDEPS=1 nas_reg=... ./scripts/pc/docker_build_robot.sh
 #   Pushes ${nas_reg}/${IMAGE}:robotdeps-${TAG} (override with ROBOTDEPS_TAG=...).
 #
 # Cross-building arm64 on an x86_64 PC uses QEMU (slow). Faster: run plain `docker build` on the Pi
-# and push. For multi-arch (rare): PLATFORMS=linux/arm64,linux/amd64 ./scripts/docker_build_robot.sh
+# and push. For multi-arch (rare): PLATFORMS=linux/arm64,linux/amd64 ./scripts/pc/docker_build_robot.sh
+#
+# QEMU colcon can intermittently fail with "rcutils ... couldn't be found" (CMake+QEMU; not missing
+# deps). robot/Dockerfile mitigates with MALLOC_ARENA_MAX and colcon retries; native arm64 avoids it.
 #
 # Cross-build x86 -> arm64 REQUIRES QEMU binfmt or every RUN fails with:
 #   exec /bin/bash: exec format error
@@ -33,7 +36,7 @@
 # `docker` (only one `docker` driver is allowed). Rootless Docker: ~/.config/docker/daemon.json + restart.
 
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT="$(git -C "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" rev-parse --show-toplevel)"
 cd "$ROOT"
 
 : "${nas_reg:?Set nas_reg to registry host:port, e.g. 192.168.1.203:5000}"
@@ -84,7 +87,7 @@ if [[ -n "${QUICK_PACKAGES:-}" && "${SKIP_QUICK:-0}" != "1" ]]; then
   export DEPS_IMAGE="${DEPS_IMAGE:-turtlebot-rfid-robot:deps}"
   export SKIP_DEPS_BUILD="${SKIP_QUICK_DEPS_BUILD:-0}"
   read -ra _quick_pkgs <<< "${QUICK_PACKAGES}"
-  "${ROOT}/scripts/quick_robot_colcon.sh" "${_quick_pkgs[@]}"
+  "${ROOT}/scripts/pc/quick_robot_colcon.sh" "${_quick_pkgs[@]}"
 fi
 
 if [[ "${PUSH_ROBOTDEPS:-0}" == "1" ]]; then

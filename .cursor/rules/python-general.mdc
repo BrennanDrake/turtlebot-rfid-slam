@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Python (general)
 
-- **Tooling**: `pyproject.toml` (`ruff` E/F/W; line length 99; target py38). Run `./scripts/lint.sh` when touching many files.
+- **Tooling**: `pyproject.toml` (`ruff` E/F/W; line length 99; target py38). Run `./scripts/pc/lint.sh` when touching many files.
 - **ROS packages** (`ros2_ws/src`): `colcon test` / `ament_flake8` / `ament_pep257` — match existing patterns; do not introduce `ruff check --select I` for those trees.
 - **Imports**: In non-ROS utility scripts, keep imports sorted sensibly; in `ament` test files follow flake8-import-order (`from ament_*` before `import pytest`).
 - **Names**: Avoid shadowing builtins (`id`, `type`, …). Prefer explicit names (`tag_id`, `line`).

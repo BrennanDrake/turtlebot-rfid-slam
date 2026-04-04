@@ -2,20 +2,20 @@
 # Robot image: TurtleBot3 fork (with RFID bringup hook) + custom ROS 2 packages from ros2_ws/src.
 # Build from repository root:
 #   docker build -f robot/Dockerfile -t turtlebot-rfid-robot:humble .
-# Pi is linux/arm64. From an x86 PC use buildx (arm64) or build on the Pi; see scripts/docker_build_robot.sh
+# Pi is linux/arm64. From an x86 PC use buildx (arm64) or build on the Pi; see scripts/pc/docker_build_robot.sh
 #
 # Fast iteration (rebuild one package only, after deps image exists):
-#   ./scripts/quick_robot_colcon.sh turtlebot3_node
+#   ./scripts/pc/quick_robot_colcon.sh turtlebot3_node
 #   docker build -f robot/Dockerfile --target robotdeps -t turtlebot-rfid-robot:deps .
 #
 # Use host networking so DDS discovery matches the robot LAN (bridge networks often break ROS 2).
-# Pass USB devices for LiDAR and RFID serial, e.g. --device /dev/ttyUSB0
+# Pass USB devices for LiDAR and RFID serial, e.g. --device /dev/ttyUSB1 (LDS) and --device /dev/ttyUSB0:/dev/ttyrfid (RFID)
 #
 # Distro note: Humble is pinned here for the current robot deployment. A future move to Jazzy
 # (e.g. ros:jazzy-ros-base on Ubuntu 24.04) will require retesting TurtleBot3 + deps and updating
 # rosdep/--rosdistro lines below; dev machines on Noble already use Jazzy natively.
 # Pi is arm64. Cross-building on x86 requires host QEMU/binfmt or RUN steps fail with
-# "exec /bin/bash: exec format error" — see scripts/docker_build_robot.sh.
+# "exec /bin/bash: exec format error" — see scripts/pc/docker_build_robot.sh.
 ARG TARGETPLATFORM=linux/arm64
 FROM --platform=$TARGETPLATFORM ros:humble-ros-base AS robotdeps
 
@@ -56,14 +56,41 @@ RUN apt-get update \
 # Final application image (default build target).
 FROM robotdeps AS robot
 
-# FindOpenSSL on arm64: CMake sometimes misses multiarch lib paths; pin for fastrtps.
-RUN source /opt/ros/humble/setup.bash \
-    && colcon build --symlink-install --merge-install \
-        --cmake-args \
-            -DOPENSSL_CRYPTO_LIBRARY=/usr/lib/aarch64-linux-gnu/libcrypto.so \
-            -DOPENSSL_SSL_LIBRARY=/usr/lib/aarch64-linux-gnu/libssl.so \
+# docker buildx linux/arm64 on amd64 uses QEMU: CMake can spuriously fail find_package/rcutils with
+# "library ... couldn't be found" even though /opt/ros/humble/lib/librcutils.so exists (heap/QEMU
+# interaction; not a missing package). See https://github.com/ros2/rcutils/issues/525
+ENV MALLOC_ARENA_MAX=1
+# Raspberry Pi / low-RAM: default `ros2` CLI spawns a caching daemon; combined with Docker +
+# bringup it can trigger OOM ("Killed"). Safe for launch; CLI falls back to direct calls (slightly slower).
+ENV ROS_DISABLE_ROS2_DAEMON=1
+# Match scripts/robot/run_robot_docker.sh default; override with docker run -e ROS_DOMAIN_ID=...
+ENV ROS_DOMAIN_ID=1
+# Match run_robot_docker / entrypoint; LDS-01 = HLDS, LDS-02 = ld08_driver.
+ENV LDS_MODEL=LDS-02
+
+# Do not pass global --cmake-args -DOPENSSL_* here: it breaks underlay packages (e.g. rcutils
+# during rosidl) even though nothing in src/ builds Fast-DDS from source. If a future package
+# needs OpenSSL on arm64, scope flags to that package (colcon.meta) or set OPENSSL_ROOT_DIR.
+# Do not use `set -u`: humble setup.bash touches optional env vars (e.g. AMENT_TRACE_SETUP_FILES).
+RUN set -eo pipefail \
+    && source /opt/ros/humble/setup.bash \
+    && n=1 \
+    && max=5 \
+    && while [ "${n}" -le "${max}" ]; do \
+         if colcon build --symlink-install --merge-install; then \
+           break; \
+         fi; \
+         if [ "${n}" -eq "${max}" ]; then \
+           echo "colcon failed after ${max} attempts (try building on a native arm64 host; see ros2/rcutils#525)" >&2; \
+           exit 1; \
+         fi; \
+         echo "[dockerfile] colcon failed (attempt ${n}/${max}), cleaning workspace and retrying..." >&2; \
+         rm -rf build install log; \
+         n=$((n + 1)); \
+       done \
     && source /colcon_ws/install/setup.bash \
     && ros2 pkg prefix turtlebot3_bringup \
+    && ros2 pkg prefix rfid_msgs \
     && ros2 pkg prefix rfid_publisher
 
 COPY robot/entrypoint.sh /entrypoint.sh

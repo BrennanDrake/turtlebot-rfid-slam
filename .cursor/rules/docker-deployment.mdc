@@ -14,7 +14,7 @@ alwaysApply: false
 
 ### Raspberry Pi (arm64 only)
 
-- Robot image targets **linux/arm64** only; `scripts/docker_build_robot.sh` defaults to that.
+- Robot image targets **linux/arm64** only; `scripts/pc/docker_build_robot.sh` defaults to that.
 - A plain `docker build` on **x86_64** yields **amd64** — the Pi cannot pull it. Use `docker buildx --platform linux/arm64` (slow on PC) or build **on the Pi** and push.
 
 ### Cross-build (`exec format error` in `RUN`)

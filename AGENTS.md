@@ -10,10 +10,10 @@ This repository is a **TurtleBot3 + RFID + SLAM** monorepo. AI agents should fol
 
 | Area | Purpose |
 |------|---------|
-| `ros2_ws/src/` | Canonical ROS 2 packages (`rfid_publisher`, `ros2_rfid_mapping`, …). Primary place for new nodes/launch. |
+| `ros2_ws/src/` | Canonical ROS 2 packages (`rfid_msgs`, `rfid_publisher`, `rfid_landmarks`, `ros2_rfid_mapping`, …). Primary place for new nodes/launch. |
 | `turtlebot3/` | Vendored TurtleBot3 fork; RFID hook in `turtlebot3_bringup/launch/robot.launch.py`. Prefer minimal diffs. |
 | `robot/`, `server/` | Docker images (Humble robot stack vs SLAM server). |
-| `scripts/` | `lint.sh`, `build_ros.sh` (native colcon + tests), `docker_build_robot.sh` (arm64 push + `:latest`), `run_robot_docker.sh` (Pi: pull + run). |
+| `scripts/` | Grouped by machine: [`scripts/pc/`](scripts/pc/README.md) (lint, `colcon`, Docker build/push, RViz, LAN echo) and [`scripts/robot/`](scripts/robot/README.md) (Pi: `docker run`, in-container `ros2`, scan checks). Symlinks keep old `./scripts/<name>.sh` paths working. |
 | `legacy/`, `firmware/` | ROS 1 scripts and Arduino; reference only unless porting. |
 
 ## Rule index
@@ -40,13 +40,13 @@ Robot **Docker** image targets **ROS 2 Humble**; native Ubuntu 24.04 dev hosts o
 
 ## Docker registry / Raspberry Pi
 
-The robot image is **for the Pi only** (default **linux/arm64**). If `docker pull` fails with *no matching manifest for linux/arm64*, the image was built only for amd64. Push an arm64 build: `nas_reg=... TAG=... ./scripts/docker_build_robot.sh`, or `docker build` **on the Pi** and push (fastest). If **push** fails with *HTTP response to HTTPS client* despite `insecure-registries`, the script uses the **`default`** buildx builder (`docker` driver) so the daemon’s insecure list applies. Do not create a second builder with `--driver docker` (Docker allows only one).
+The robot image is **for the Pi only** (default **linux/arm64**). If `docker pull` fails with *no matching manifest for linux/arm64*, the image was built only for amd64. Push an arm64 build: `nas_reg=... TAG=... ./scripts/pc/docker_build_robot.sh`, or `docker build` **on the Pi** and push (fastest). If **push** fails with *HTTP response to HTTPS client* despite `insecure-registries`, the script uses the **`default`** buildx builder (`docker` driver) so the daemon’s insecure list applies. Do not create a second builder with `--driver docker` (Docker allows only one).
 
 If **`exec /bin/bash: exec format error`** during `RUN`, you are cross-building **arm64** on **x86** without **QEMU binfmt**. Run once: `docker run --privileged --rm tonistiigi/binfmt --install all`, or build on the Pi (`docker build` natively).
 
 ## Robot container (bringup on start)
 
-The image **ENTRYPOINT** runs `ros2 launch turtlebot3_bringup robot.launch.py` (TurtleBot + LiDAR + RFID). Map USB devices and set **in-container** serial paths if they differ from defaults (`/dev/ttyUSB0` for both LiDAR and RFID).
+The image **ENTRYPOINT** runs `ros2 launch turtlebot3_bringup robot.launch.py` (TurtleBot + LiDAR + RFID). Map USB devices and set **in-container** serial paths if they differ from defaults (LiDAR **`/dev/ttyUSB1`**, RFID often **`/dev/ttyrfid`** mapped from host `ttyUSB0`; override `LIDAR_PORT` / `RFID_SERIAL_PORT` as needed).
 
 Example (interactive):
 
@@ -56,7 +56,7 @@ docker run --rm -it --net=host \
   --device=/dev/ttyUSB0:/dev/ttyrfid \
   --device=/dev/ttyUSB1:/dev/ttyUSB1 \
   -e TURTLEBOT3_MODEL=burger \
-  -e LDS_MODEL=LDS-01 \
+  -e LDS_MODEL=LDS-02 \
   -e RFID_SERIAL_PORT=/dev/ttyrfid \
   -e LIDAR_PORT=/dev/ttyUSB1 \
   192.168.1.203:5000/turtlebot-rfid-robot:1.0
@@ -64,7 +64,7 @@ docker run --rm -it --net=host \
 
 For **cron** / boot, drop `-it`, add `-d`, and log to a file or `journald`. Shell for debugging: `docker run --entrypoint bash -it ...` then `source /colcon_ws/install/setup.bash` and launch manually.
 
-**Floating tag (`latest`):** `scripts/docker_build_robot.sh` pushes both `TAG` (e.g. `1.0`) and `:latest`. On the robot, **`docker pull` then `docker run ...:latest`** so a startup script does not need a hardcoded version:
+**Floating tag (`latest`):** `scripts/pc/docker_build_robot.sh` pushes both `TAG` (e.g. `1.0`) and `:latest`. On the robot, **`docker pull` then `docker run ...:latest`** so a startup script does not need a hardcoded version:
 
 ```bash
 REGISTRY=192.168.1.203:5000
@@ -78,6 +78,6 @@ docker run --rm -d --name turtlebot-rfid --net=host \
   "$IMAGE"
 ```
 
-Same behavior from the repo on the Pi: `nas_reg=192.168.1.203:5000 ./scripts/run_robot_docker.sh` (override `TAG`, `DEVICE_*`, or `RFID_SERIAL_PORT` / `LIDAR_PORT` as needed).
+Same behavior from the repo on the Pi: `nas_reg=192.168.1.203:5000 ./scripts/robot/run_robot_docker.sh` (override `TAG`, `DEVICE_*`, `LDS_MODEL` (`LDS-01` vs `LDS-02`), or `RFID_SERIAL_PORT` / `LIDAR_PORT` as needed).
 
 Docker does not auto-resolve “newest semver” from the registry; you either use a **moving tag** like `latest` (above) or pin `1.0`, `1.1`, etc.

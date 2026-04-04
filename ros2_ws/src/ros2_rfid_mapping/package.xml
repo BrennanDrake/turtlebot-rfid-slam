@@ -2,17 +2,21 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros2_rfid_mapping</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="carvinaxe3@todo.todo">carvinaxe3</maintainer>
-  <license>TODO: License declaration</license>
+  <version>0.1.0</version>
+  <description>SLAM Toolbox + RFID mapping launches and configuration.</description>
+  <maintainer email="81040749+BrennanDrake@users.noreply.github.com">Brennan Drake</maintainer>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>slam_toolbox</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
-  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>nav2_map_server</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
+  <exec_depend>rfid_landmarks</exec_depend>
+  <exec_depend>slam_toolbox</exec_depend>
 
   <test_depend>ament_cmake_flake8</test_depend>
 

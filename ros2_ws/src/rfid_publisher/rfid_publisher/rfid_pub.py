@@ -13,20 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""ROS 2 node: read RFID tag IDs from serial and publish on topic ``rfid``."""
+"""ROS 2 node: parse PN5180 serial lines and publish ``rfid_msgs/RfidDetection``."""
 
+import re
 import rclpy
+from geometry_msgs.msg import PoseWithCovariance
 from rclpy.node import Node
 import serial
 from std_msgs.msg import String
 
+from rfid_msgs.msg import RfidDetection
 
-class MinimalPublisher(Node):
-    """Timer-driven publisher: polls serial and republishes the last seen tag id on each tick."""
+# R<reader>,<hex_uid>  e.g. R0,E00401005E231B26
+_RE_DETECT = re.compile(r'^R(\d+),([0-9A-Fa-f]+)\s*$')
+# X<reader>
+_RE_REMOVE = re.compile(r'^X(\d+)\s*$')
+
+
+class RfidSerialPublisher(Node):
+    """Reads machine-parseable lines from Arduino and publishes structured detections."""
 
     def __init__(self):
-        super().__init__('minimal_publisher')
-        # Default device matches common USB-serial layout on TurtleBot setups; override via params.
+        super().__init__('rfid_serial_publisher')
         self.declare_parameter('serial_port', '/dev/ttyUSB0')
         self.declare_parameter('serial_baud', 115200)
         self.declare_parameter('timer_period_sec', 0.05)
@@ -37,32 +45,65 @@ class MinimalPublisher(Node):
         if timer_period <= 0.0:
             timer_period = 0.05
 
-        self.publisher_ = self.create_publisher(String, 'rfid', 10)
+        self._pub_detection = self.create_publisher(RfidDetection, 'rfid/detections', 10)
+        self._pub_string = self.create_publisher(String, 'rfid', 10)
+        self._last_tag_id = ''
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
-        # Last payload published; keeps behavior stable when no new bytes arrive (same as repeating
-        # the previous line) and avoids use-before-assign on the first timer tick.
-        self._last_tag_id = ''
-
-        # pyserial: timeout=1 so readline() returns after up to 1s if incomplete (rare here).
         self.ser = serial.Serial(port, baud, timeout=1)
         self.get_logger().info('RFID serial open: %s @ %d' % (port, baud))
 
     def timer_callback(self):
-        # Drain at most one line per tick to avoid blocking the executor if the reader floods.
         if self.ser.in_waiting > 0:
             raw = self.ser.readline()
-            self._last_tag_id = raw.decode('utf-8').rstrip()
-            self.get_logger().info('RFID tag: "%s"' % self._last_tag_id)
+            line = raw.decode('utf-8', errors='replace').strip()
+            if not line or line == 'READY':
+                pass
+            else:
+                self._process_line(line)
 
         msg = String()
         msg.data = self._last_tag_id
-        self.publisher_.publish(msg)
+        self._pub_string.publish(msg)
+
+    def _process_line(self, line: str) -> None:
+        m = _RE_DETECT.match(line)
+        if m:
+            reader_index = int(m.group(1))
+            tag_id = m.group(2).upper()
+            self._last_tag_id = tag_id
+            det = RfidDetection()
+            det.header.stamp = self.get_clock().now().to_msg()
+            det.header.frame_id = ''
+            det.tag_id = tag_id
+            det.reader_index = reader_index
+            det.present = True
+            det.pose = PoseWithCovariance()
+            self._pub_detection.publish(det)
+            self.get_logger().info('RFID detect reader=%d tag=%s' % (reader_index, tag_id))
+            return
+
+        m = _RE_REMOVE.match(line)
+        if m:
+            reader_index = int(m.group(1))
+            self._last_tag_id = ''
+            det = RfidDetection()
+            det.header.stamp = self.get_clock().now().to_msg()
+            det.header.frame_id = ''
+            det.tag_id = ''
+            det.reader_index = reader_index
+            det.present = False
+            det.pose = PoseWithCovariance()
+            self._pub_detection.publish(det)
+            self.get_logger().info('RFID remove reader=%d' % reader_index)
+            return
+
+        self.get_logger().debug('RFID unparsed line: %s' % line)
 
 
 def main(args=None):
     rclpy.init(args=args)
-    node = MinimalPublisher()
+    node = RfidSerialPublisher()
     try:
         rclpy.spin(node)
     finally:

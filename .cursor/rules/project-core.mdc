@@ -22,4 +22,4 @@ alwaysApply: true
 ## Testing / quality
 
 - Python under `ros2_ws/src`: `ament_flake8` / `colcon test` expectations; Ruff config in `pyproject.toml` (no `I*` rules — conflicts with ament import order).
-- Prefer `./scripts/lint.sh` before large Python edits; use `./scripts/build_ros.sh` when validating native builds (requires sourced ROS).
+- Prefer `./scripts/pc/lint.sh` before large Python edits; use `./scripts/pc/build_ros.sh` when validating native builds (requires sourced ROS).

@@ -1,0 +1,40 @@
+# robot_localization EKF: fuse wheel odometry + intermittent RFID absolute pose.
+# Launch with: ros2 run robot_localization ekf_node --ros-args -r __node:=ekf_global --params-file THIS_FILE
+
+ekf_global:
+  ros__parameters:
+    frequency: 30.0
+    sensor_timeout: 0.2
+    two_d_mode: true
+    transform_time_offset: 0.0
+    transform_timeout: 0.1
+    publish_tf: true
+    print_diagnostics: true
+
+    map_frame: map
+    odom_frame: odom
+    base_link_frame: base_footprint
+    world_frame: map
+
+    publish_odometry: true
+    odometry_topic: /odometry/filtered
+
+    # TurtleBot3 wheel odometry: fuse vx and yaw rate
+    odom0: /odom
+    odom0_config: [false, false, false,
+                   false, false, false,
+                   true,  false, false,
+                   false, false, true,
+                   false, false, false]
+    odom0_differential: false
+    odom0_queue_size: 10
+
+    # RFID pose (map frame) when a mature tag is read
+    odom1: /rfid/odom
+    odom1_config: [true,  true,  false,
+                   false, false, false,
+                   false, false, false,
+                   false, false, false,
+                   false, false, false]
+    odom1_differential: false
+    odom1_queue_size: 2

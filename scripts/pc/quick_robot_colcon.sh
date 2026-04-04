@@ -6,8 +6,8 @@
 # Or let this script build that image (same command).
 #
 # Usage (repo root):
-#   ./scripts/quick_robot_colcon.sh turtlebot3_node
-#   ./scripts/quick_robot_colcon.sh turtlebot3_node rfid_publisher
+#   ./scripts/pc/quick_robot_colcon.sh turtlebot3_node
+#   ./scripts/pc/quick_robot_colcon.sh turtlebot3_node rfid_publisher
 #
 # Env:
 #   DEPS_IMAGE=turtlebot-rfid-robot:deps   image tag for robotdeps stage
@@ -15,7 +15,7 @@
 #   SKIP_DEPS_BUILD=1                    do not run docker build (use existing DEPS_IMAGE)
 #
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT="$(git -C "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" rev-parse --show-toplevel)"
 cd "$ROOT"
 
 if [[ $# -lt 1 ]]; then
@@ -47,18 +47,9 @@ docker run --rm --platform "${PLATFORM}" \
     /merge_src.sh /repo/turtlebot3 /repo/ros2_ws/src /colcon_ws/src
     # Do not use set -u here: humble setup.bash references optional env vars.
     source /opt/ros/humble/setup.bash
-    m=$(uname -m)
-    case "$m" in
-      aarch64) LIBDIR=/usr/lib/aarch64-linux-gnu ;;
-      x86_64)  LIBDIR=/usr/lib/x86_64-linux-gnu ;;
-      *)       LIBDIR=/usr/lib/"$m"-linux-gnu ;;
-    esac
     # shellcheck disable=SC2086
     colcon build --symlink-install --merge-install \
-      --packages-select ${QUICK_ROBOT_PACKAGES} \
-      --cmake-args \
-        "-DOPENSSL_CRYPTO_LIBRARY=${LIBDIR}/libcrypto.so" \
-        "-DOPENSSL_SSL_LIBRARY=${LIBDIR}/libssl.so"
+      --packages-select ${QUICK_ROBOT_PACKAGES}
   '
 
 echo "[quick_robot_colcon] OK: $*" >&2

@@ -22,8 +22,8 @@ You are assisting on a **ROS 2 (Humble/Jazzy) + TurtleBot3 + RFID + slam_toolbox
 
 ## Quality gates
 
-- Before large Python changes: `./scripts/lint.sh` (compileall, xmllint, ruff).
-- Native build + tests: `./scripts/build_ros.sh` (requires sourced `/opt/ros/$ROS_DISTRO`).
+- Before large Python changes: `./scripts/pc/lint.sh` (compileall, xmllint, ruff).
+- Native build + tests: `./scripts/pc/build_ros.sh` (requires sourced `/opt/ros/$ROS_DISTRO`).
 
 ## Output style
 

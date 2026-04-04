@@ -1,0 +1,6 @@
+string tag_id
+geometry_msgs/PoseWithCovariance pose
+uint32 observation_count
+builtin_interfaces/Time first_seen
+builtin_interfaces/Time last_seen
+bool mature

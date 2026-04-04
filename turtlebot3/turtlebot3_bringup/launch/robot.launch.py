@@ -74,8 +74,8 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'lidar_port',
-            default_value='/dev/ttyUSB0',
-            description='Serial device for LDS (inside container, e.g. /dev/ttyUSB1 if LiDAR is second USB)'),
+            default_value='/dev/ttyUSB1',
+            description='Serial device for LDS (inside container; override if your LiDAR is on another ttyUSB*)'),
 
         DeclareLaunchArgument(
             'rfid_serial_port',

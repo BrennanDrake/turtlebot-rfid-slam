@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Fast checks that do not require sourcing ROS: syntax, XML, Ruff.
-# Usage: ./scripts/lint.sh   (from repo root or any cwd)
+# Usage: ./scripts/pc/lint.sh   (or ./scripts/lint.sh — symlink)
 
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT="$(git -C "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" rev-parse --show-toplevel)"
 SRC="${ROOT}/ros2_ws/src"
 FAILED=0
 

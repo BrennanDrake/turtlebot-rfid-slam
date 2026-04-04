@@ -8,9 +8,11 @@ alwaysApply: false
 
 ## Packages
 
-- **`rfid_publisher`**: Serial → `std_msgs/String` on `rfid`; parameters `serial_port`, `serial_baud`, `timer_period_sec`.
-- **`ros2_rfid_mapping`**: `slam_toolbox` launch + YAML only (no compiled nodes).
-- **`turtlebot_rfid`**: Custom URDF/sim; separate from stock `turtlebot3_description`.
+- **`rfid_msgs`**: `RfidDetection`, `RfidLandmark`, `RfidLandmarkArray`, save/load services (`ament_cmake` + `rosidl`).
+- **`rfid_publisher`**: Serial → `rfid_msgs/RfidDetection` on `rfid/detections` and `std_msgs/String` on `rfid` (machine-parseable `R<n>,<hex>` / `X<n>` lines).
+- **`rfid_landmarks`**: `rfid_landmark_manager` (TF + Kalman landmarks, `/rfid/odom` for EKF), `covariance_replan_node` (Nav2).
+- **`ros2_rfid_mapping`**: `slam_toolbox` + Nav2 + EKF launches and YAML (no compiled nodes).
+- **`turtlebot_rfid`**: Custom URDF/sim; separate from vendored `turtlebot3_description` (robot uses vendored URDF with `rfid_sensor_link`).
 
 ## TurtleBot3
 
@@ -24,4 +26,4 @@ alwaysApply: false
 ## Launch / YAML
 
 - `slam_toolbox` scan parameter is `scan_topic` (not `scan_topc`).
-- Lifelong mapping / RFID graph injection: not implemented in-tree; treat as future work unless files exist.
+- RFID landmark layer: separate from `slam_toolbox` (see `rfid_landmarks` + `mapping_with_rfid_launch.py`).

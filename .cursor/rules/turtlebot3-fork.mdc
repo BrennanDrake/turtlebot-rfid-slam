@@ -8,4 +8,4 @@ alwaysApply: false
 
 - Treat as **upstream-vendored**: only change what RFID / integration requires.
 - RFID integration point: `turtlebot3_bringup/launch/robot.launch.py` (`rfid_publisher` node).
-- LiDAR launch may assume `/dev/ttyUSB0`; document if RFID serial competes for the same device namespace on the robot.
+- LiDAR default in this fork is `/dev/ttyUSB1` (override `lidar_port` / `LIDAR_PORT` if your LDS is elsewhere); RFID often uses `/dev/ttyrfid` when mapped from another host ttyUSB.
